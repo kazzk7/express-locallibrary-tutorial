@@ -2,15 +2,17 @@ name: DevSecOps CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   devsecops:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Node.js
@@ -22,25 +24,25 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm test || echo "Tests failed"
+        run: npm test || echo "Tests failed but continuing..."
 
-      - name: Semgrep scan
+      - name: Run Semgrep scan
         uses: returntocorp/semgrep-action@v1
         with:
           config: "auto"
 
-      - name: OWASP Dependency-Check
+      - name: Run OWASP Dependency-Check scan
         run: |
-          docker run --rm ^
-            -v "${{ github.workspace }}:/src" ^
-            owasp/dependency-check ^
-            --project "MyApp" ^
-            --scan /src ^
-            --format HTML ^
+          docker run --rm \
+            -v "${{ github.workspace }}:/src" \
+            owasp/dependency-check \
+            --project "MyApp" \
+            --scan /src \
+            --format HTML \
             --out /src/reports
 
-      - name: Upload report
+      - name: Upload OWASP Dependency-Check report
         uses: actions/upload-artifact@v3
         with:
-          name: dep-check-report
+          name: dependency-check-report
           path: reports/dependency-check-report.html
