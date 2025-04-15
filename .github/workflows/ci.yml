@@ -49,7 +49,7 @@ jobs:
         run: ls -la reports/
 
       - name: Upload OWASP Dependency-Check report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: dependency-check-report
           path: reports/dependency-check-report.html
