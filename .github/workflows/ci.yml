@@ -48,8 +48,8 @@ jobs:
       - name: List reports directory
         run: ls -la reports/
 
-      - name: Upload OWASP Dependency-Check report
-        uses: actions/upload-artifact@v2
+      - name: Upload Dependency-Check Report
+        uses: actions/upload-artifact@v2.3.4
         with:
           name: dependency-check-report
           path: reports/dependency-check-report.html
