@@ -11,6 +11,7 @@ on:
 jobs:
   devsecops:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -31,6 +32,9 @@ jobs:
         with:
           config: "auto"
 
+      - name: Create reports directory
+        run: mkdir -p reports
+
       - name: Run OWASP Dependency-Check scan
         run: |
           docker run --rm \
@@ -40,6 +44,9 @@ jobs:
             --scan /src \
             --format HTML \
             --out /src/reports
+
+      - name: List reports directory
+        run: ls -la reports/
 
       - name: Upload OWASP Dependency-Check report
         uses: actions/upload-artifact@v3
